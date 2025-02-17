@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrui-ha <chrui-ha@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 13:12:04 by chrui-ha          #+#    #+#             */
-/*   Updated: 2025/02/09 17:54:01 by chrui-ha         ###   ########.fr       */
+/*   Updated: 2025/02/09 17:50:20 by chrui-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "minitalk_bonus.h"
 
 void	handle_signal(int num, siginfo_t *info, void *context)
 {
-	static int				bit = 7;
-	static unsigned char	c;
-	static pid_t			client_pid = 0;
+	static int					bit = 7;
+	static unsigned char		c;
+	static pid_t				client_pid = 0;
 
 	(void)context;
 	if (client_pid == 0 || client_pid != info->si_pid)
@@ -31,8 +31,10 @@ void	handle_signal(int num, siginfo_t *info, void *context)
 	}
 	else
 		bit--;
-	if (client_pid > 0)
+	if (num == SIGUSR1)
 		kill(client_pid, SIGUSR1);
+	else
+		kill(client_pid, SIGUSR2);
 }
 
 int	main(void)
